@@ -1,0 +1,68 @@
+
+Lab-3
+Write a Solidity smart contract named BankAccount to implement a simple bank account system using blockchain technology
+
+
+
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+contract BankAccount {
+
+    uint public balance; // Stores the account balance
+
+    // Deposit money
+    function deposit() public payable {
+        balance += msg.value; // Add deposited Ether to balance
+    }
+
+    // Withdraw money
+    function withdraw(uint amount) public {
+        require(amount <= balance, "Insufficient balance"); // Check sufficient balance
+
+        balance -= amount; // Subtract withdrawal amount
+
+        (bool success, ) = payable(msg.sender).call{value: amount}(""); // Send Ether to caller
+
+        require(success, "Transfer failed"); // Check transfer success
+    }
+
+    // Show balance
+    function showBalance() public view returns (uint) {
+        return balance; // Return current balance
+    }
+}
+
+*****************************
+
+
+
+Lab-4
+Write a Solidity program using Structures & Arrays to store Student Data. Deploy & observe gas usage.
+
+
+#Code
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;                // Solidity version
+
+contract StudentData {               // Create contract
+
+    struct Student {                         // Store one student's details
+        uint id;                     	                // Example: 1
+        string name;                         // Example: Rahul
+        uint marks;                          // Example: 85
+    }
+
+    Student[] students;               // Array to store many students
+
+    function add(uint id, string memory name, uint marks) 
+   public {
+        students.push(Student(id, name, marks));       // Example: Add 1, Rahul, 85
+    }
+
+    function get(uint i) 
+    public view returns(uint, string memory, uint) {
+        Student memory s = students[i];                           // Example: Read student at index 0
+        return (s.id, s.name, s.marks);                              	// Output: 1, Rahul, 85
+    }
+}
